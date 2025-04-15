@@ -2,7 +2,6 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-nt_word_index.json
 *.db
 instance/
 .env
