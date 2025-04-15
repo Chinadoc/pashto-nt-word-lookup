@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 # Load NT word index at startup
-with open(os.path.join(os.path.dirname(__file__), '../scripts/nt_word_index.json'), encoding='utf-8') as f:
+with open(os.path.join(os.path.dirname(__file__), 'nt_word_index.json'), encoding='utf-8') as f:
     WORD_INDEX = json.load(f)
 
 def fetch_lingdocs(word):
