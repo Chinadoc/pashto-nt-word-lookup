@@ -18,11 +18,25 @@ def fetch_lingdocs(word):
     if resp.status_code != 200:
         return "No dictionary entry found."
     soup = BeautifulSoup(resp.text, "html.parser")
-    # Try to extract the main entry (this may need adjustment if Lingdocs changes layout)
+    # Find the first link to a word entry
+    link = soup.find('a', href=True)
+    if link and '/word?id=' in link['href']:
+        word_url = f"https://dictionary.lingdocs.com{link['href']}"
+        word_resp = requests.get(word_url)
+        print(word_resp.text)  # Debug: print the HTML of the word entry page
+        if word_resp.status_code == 200:
+            word_soup = BeautifulSoup(word_resp.text, "html.parser")
+            entry = word_soup.find(class_="entry-container")
+            if entry:
+                return str(entry)
+            main = word_soup.find("main")
+            if main:
+                return str(main)
+        return "No dictionary entry found."
+    # If no link found, fallback to old method
     entry = soup.find(class_="entry-container")
     if entry:
         return str(entry)
-    # Fallback: extract the main content
     main = soup.find("main")
     if main:
         return str(main)
@@ -33,12 +47,17 @@ def index():
     result = None
     verses = []
     word = ""
+    similar_keys = []
     if request.method == "POST":
         word = request.form.get("word", "").strip()
-        # Dictionary lookup
         result = fetch_lingdocs(word)
-        # NT verses lookup
+        # Find exact matches for verses
         verses = WORD_INDEX.get(word, [])
+        # Debug: print similar keys in the index
+        for k in WORD_INDEX:
+            if word in k or k in word:
+                similar_keys.append(k)
+        print(f"Similar keys for '{word}': {similar_keys}")
     return render_template("index.html", word=word, result=result, verses=verses)
 
 @app.route("/api/lookup")
