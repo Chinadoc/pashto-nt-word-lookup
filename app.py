@@ -14,6 +14,7 @@ def fetch_lingdocs(word):
     # Try to fetch the dictionary entry from Lingdocs
     url = f"https://dictionary.lingdocs.com/search/{word}"
     resp = requests.get(url)
+    print(resp.text)  # Debug: print the HTML response from Lingdocs
     if resp.status_code != 200:
         return "No dictionary entry found."
     soup = BeautifulSoup(resp.text, "html.parser")
