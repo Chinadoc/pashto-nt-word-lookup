@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+nt_word_index.json
+*.db
+instance/
+.env
+*.sqlite3
+*.log
+.DS_Store
+/build/
+/node_modules/
+/bible_pdfs/

@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+  command = ""
+
+[dev]
+  port = 5000
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pashto NT Word Lookup</title>
+    <style>
+        body { font-family: sans-serif; max-width: 700px; margin: 2em auto; background: #f9f9f9; }
+        h1 { color: #26547c; }
+        .dict-entry { background: #fff; padding: 1em; border-radius: 6px; margin-bottom: 1em; box-shadow: 0 2px 8px #0001; }
+        .verses { background: #fff; padding: 1em; border-radius: 6px; box-shadow: 0 2px 8px #0001; }
+        .verse-ref { color: #26547c; font-weight: bold; }
+        .verse-text { margin-bottom: 0.7em; }
+        form { margin-bottom: 1.5em; }
+        input[type=text] { font-size: 1.1em; padding: 0.3em 0.5em; border-radius: 4px; border: 1px solid #aaa; }
+        button { font-size: 1.1em; padding: 0.3em 1em; border-radius: 4px; background: #26547c; color: #fff; border: none; cursor: pointer; }
+        button:hover { background: #18314f; }
+    </style>
+</head>
+<body>
+    <h1>Pashto NT Word Lookup</h1>
+    <form method="post">
+        <input type="text" name="word" placeholder="Enter Pashto word..." value="{{ word|e }}" required>
+        <button type="submit">Search</button>
+    </form>
+    {% if word %}
+        <h2>Dictionary Entry for: <span style="color:#18314f">{{ word }}</span></h2>
+        <div class="dict-entry">{{ result|safe }}</div>
+        <h2>New Testament Verses</h2>
+        <div class="verses">
+            {% if verses %}
+                {% for v in verses %}
+                    <div class="verse-text">
+                        <span class="verse-ref">{{ v.book }} {{ v.chapter }}:{{ v.verse }}</span><br>
+                        {{ v.text }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div>No verses found for this word in the New Testament.</div>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>
